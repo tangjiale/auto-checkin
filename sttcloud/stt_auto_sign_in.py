@@ -9,7 +9,7 @@ import requests
 from requests import utils
 
 
-class SttAutoSignIn():
+class SttAutoSignIn:
 
     def __init__(self):
         self.header = {
@@ -19,6 +19,7 @@ class SttAutoSignIn():
         self.cookies = {}
 
     # 登录
+    # @param data 登录请求信息
     def login(self, data):
         login_url = "https://sttlink.com/auth/login"
 
@@ -37,14 +38,18 @@ class SttAutoSignIn():
         print(resp_data)
         self.push_message(uid, resp_data["msg"])
 
+    # 获取用户信息
     def user(self):
-        userinfo_url = "https://sttlink.com/user"
-        response = requests.get(url=userinfo_url, headers=self.header, cookies=self.cookies)
+        user_info_url = "https://sttlink.com/user"
+        response = requests.get(url=user_info_url, headers=self.header, cookies=self.cookies)
         print(response.text)
 
+    # 推送信息到微信
+    # @param uid wxPusher的用户id
+    # @param message 推送消息
     def push_message(self, uid, message):
         push_url = "http://wxpusher.zjiecode.com/api/send/message"
-        req = {
+        req_json = {
             "appToken": "AT_cWSuidnpkwufJ5JgF1PverQoF0cQr3No",
             "content": message,
             "contentType": 1,
@@ -53,12 +58,12 @@ class SttAutoSignIn():
         header = {
             "Content-Type": "application/json"
         }
-        response = requests.post(url=push_url, json=req, headers=header)
+        response = requests.post(url=push_url, json=req_json, headers=header)
         print(response.text)
 
 
 # 请求数据
-req_data = [
+req_data_list = [
     {
         'email': '243185722@qq.com',
         'passwd': 'yw121175',
@@ -70,13 +75,13 @@ req_data = [
     }
 ]
 stt = SttAutoSignIn()
-for req in req_data:
-    req_temp = {
-        "email": req["email"],
-        "passwd": req["passwd"]
+for req_data in req_data_list:
+    data = {
+        "email": req_data["email"],
+        "passwd": req_data["passwd"]
     }
-    stt.login(req_temp)
-    stt.checkin(req["uid"])
+    stt.login(data)
+    stt.checkin(req_data["uid"])
     # stt.user()
 
 # stt.push_message("UID_qNCI9uES2zahjmm8W3iGZAEB07sv", "您似乎已经签到过了...")
