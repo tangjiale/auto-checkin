@@ -2,14 +2,14 @@
 # -*- coding: utf-8 -*-
 # @Time    : 2021-08-17 10:15
 # @Author  : jiale
-# @Site    : 用于stt_cloud 自动签到
-# @File    : stt_auto_checkin.py
+# @Site    : 用于stt_cloud 自动签到获得流量
+# @File    : stt_checkin.py
 # @Software: PyCharm
 import requests
 from requests import utils
 
 
-class SttAutoCheckin:
+class SttCheckin:
 
     def __init__(self):
         self.header = {
@@ -74,7 +74,7 @@ req_data_list = [
         "uid": "UID_qNCI9uES2zahjmm8W3iGZAEB07sv"
     }
 ]
-stt = SttAutoCheckin()
+stt = SttCheckin()
 for req_data in req_data_list:
     data = {
         "email": req_data["email"],

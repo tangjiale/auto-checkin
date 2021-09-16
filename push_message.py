@@ -3,7 +3,7 @@
 # @Time    : 2021-09-06 10:10
 # @Author  : jiale
 # @Site    : 推送微信消息
-# @File    : push_wx_message.py
+# @File    : push_message.py
 # @Software: PyCharm
 import requests
 
@@ -11,7 +11,7 @@ import requests
 # 推送信息到微信
 # @param uid wxPusher的用户id
 # @param message 推送消息
-def push_message(uid, message):
+def push_wx_message(uid, message):
     push_url = "http://wxpusher.zjiecode.com/api/send/message"
     req_json = {
         "appToken": "AT_cWSuidnpkwufJ5JgF1PverQoF0cQr3No",
