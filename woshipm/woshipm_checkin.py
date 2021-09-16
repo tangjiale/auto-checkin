@@ -28,7 +28,7 @@ class WoShiPmCheckin:
     # @param uid 微信用户id
     def checkin(self, uid):
         checkin_url = "http://api.woshipm.com/user/signUp.html?sequence=1&COMMON_ACCESS_TOKEN=%s&COMMON_ACCESS_TOKEN_SECRET=%s&_cT=IOS&_cV=4.4.8&_cA=PM" % (
-        self.access_token, self.access_token_secret)
+            self.access_token, self.access_token_secret)
         response = requests.post(url=checkin_url, headers=self.header)
         resp_data = json.loads(response.text)
         self.header["event_location"] = "PMCheckInViewController"
@@ -63,7 +63,7 @@ class WoShiPmCheckin:
     # 获取用户信息
     def get_user_info(self):
         info_url = "https://wen.woshipm.com/api/user1/V4/myIndex.html?COMMON_ACCESS_TOKEN=%s&COMMON_ACCESS_TOKEN_SECRET=%s&_cT=IOS&_cV=4.4.8&_cA=PM" % (
-        self.access_token, self.access_token_secret)
+            self.access_token, self.access_token_secret)
         response = requests.get(url=info_url, headers=self.header)
         print(response.text)
 
