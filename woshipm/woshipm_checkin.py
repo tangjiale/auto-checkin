@@ -6,6 +6,7 @@
 # @File    : woshipm_checkin.py
 # @Software: PyCharm
 import json
+
 import requests
 
 
@@ -23,6 +24,8 @@ class WoShiPmCheckin:
         self.access_token_secret = ""
         # 微信用户id
         self.uid = "UID_qNCI9uES2zahjmm8W3iGZAEB07sv"
+        # 当前应用消息title
+        self.title = "人人都是产品经理"
 
     # 签到
     # @param uid 微信用户id
@@ -34,12 +37,13 @@ class WoShiPmCheckin:
         self.header["event_location"] = "PMCheckInViewController"
         self.header["event_location_pre"] = "user_home@signin"
         print(resp_data)
-        msg = "人人都是产品经理：签到成功"
         if resp_data["CODE"] == 200:
+            success_msg = "%s：签到成功" % self.title
             # 推送微信消息
-            self.push_message(uid, msg)
+            self.push_message(uid, success_msg)
         else:
-            self.push_message(uid, resp_data["MESSAGE"])
+            error_msg = "%s: 签到失败，%s" % (self.title, resp_data["MESSAGE"])
+            self.push_message(uid, error_msg)
 
     # 登录
     # @param user_data 用户登录请求对象
@@ -59,6 +63,8 @@ class WoShiPmCheckin:
             self.access_token_secret = resp_data["RESULT"]["PM-Cookie"]["COMMON_ACCESS_TOKEN_SECRET"]
         else:
             print("登录失败：" + resp_data["MESSAGE"])
+            error_msg = "%s: 登录失败，%s" % (self.title, resp_data["MESSAGE"])
+            self.push_message(self.uid, error_msg)
 
     # 获取用户信息
     def get_user_info(self):

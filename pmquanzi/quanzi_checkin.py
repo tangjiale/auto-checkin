@@ -3,7 +3,7 @@
 # @Time    : 2021-09-15 22:25
 # @Author  : jiale
 # @Site    : 用于管理圈app 自动签到获得学分
-# @File    : quanzi_checkin.py
+# @File    : csdn_checkin.py
 # @Software: PyCharm
 import json
 
@@ -17,7 +17,12 @@ class QuanziCheckin:
             "User-Agent": "5.0.0 (iPhone; iOS 14.3; zh_CN)",
             "Content-Type": "application/x-www-form-urlencoded; charset=utf-8"
         }
+        # 用户当前登录token
         self.token = ""
+        # wx 用户id
+        self.uid = "UID_qNCI9uES2zahjmm8W3iGZAEB07sv"
+        # 当前应用消息title
+        self.title = "管理圈"
 
     # 登录
     # @param data 登录请求信息
@@ -33,21 +38,25 @@ class QuanziCheckin:
             print(self.token)
         else:
             print("登录失败")
+            error_msg = "%s: 登录失败，%s" % (self.title, resp_data["msg"])
+            self.push_message(self.uid, error_msg)
 
     # 签到
     # @param uid 微信用户id
     def checkin(self, uid, req_data):
         checkin_url = "http://www.pmquanzi.com/api/user/qiandao_new"
         response = requests.post(url=checkin_url, data=req_data, headers=self.header)
-        resp_data = json.loads(response.text)
-        print(resp_data)
-        if resp_data["status"] == 1:
+        resp_json = json.loads(response.text)
+        print(resp_json)
+        if resp_json["status"] == 1:
+            # 返回的data数据
+            resp_data = resp_json["data"]
             # 响应成功
-            msg = "管理圈:" + resp_data["msg"] + ",当月签到次数：" + str(resp_data["sign_count_month"]) + ",当前学分：" + str(
-                resp_data["score"])
+            msg = "%s : %s,当月签到次数：%d,当前学分：%d" % (
+                self.title, resp_json["msg"], resp_data["sign_count_month"], resp_data["score"])
             self.push_message(uid, msg)
         else:
-            self.push_message(uid, resp_data["msg"])
+            self.push_message(uid, "%s : %s" % (self.title, resp_json["msg"]))
 
     # 获取签到列表
     def get_checkin_list(self, req_data):
@@ -74,25 +83,16 @@ class QuanziCheckin:
 
 
 # 请求数据
-req_user_list = [
-    {
-        'token': '0',
-        'mobile': '15208427173',
-        'password': 'Pm_911026',
-        "uid": "UID_qNCI9uES2zahjmm8W3iGZAEB07sv"
-    }
-]
+req_user_data = {
+    'token': '0',
+    'mobile': '15208427173',
+    'password': 'Pm_911026'
+}
 qz = QuanziCheckin()
-for user_data in req_user_list:
-    data = {
-        "token": user_data["token"],
-        "mobile": user_data["mobile"],
-        "password": user_data["password"]
-    }
-    # qz.login(data)
-    req_data = {
-        "token": qz.token
-    }
-    # qz.get_checkin_list(req_data)
-    # qz.checkin(user_data["uid"],req_data)
+qz.login(req_user_data)
+req_data = {
+    "token": qz.token
+}
+# qz.get_checkin_list(req_data)
+qz.checkin(qz.uid, req_data)
 # qz.push_message("UID_qNCI9uES2zahjmm8W3iGZAEB07sv", "签到成功")

@@ -17,6 +17,7 @@ class SttCheckin:
             "Accept": "application/json, text/javascript, */*; q=0.01"
         }
         self.cookies = {}
+        self.title = "sttcloud"
 
     # 登录
     # @param data 登录请求信息
@@ -36,7 +37,7 @@ class SttCheckin:
         response = requests.post(url=checkin_url, headers=self.header, cookies=self.cookies)
         resp_data = eval(response.text.encode().decode("unicode_escape"))
         print(resp_data)
-        self.push_message(uid, resp_data["msg"])
+        self.push_message(uid, "%s: %s" % (self.title, resp_data["msg"]))
 
     # 获取用户信息
     def user(self):

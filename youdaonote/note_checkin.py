@@ -21,7 +21,10 @@ class NoteCheckin:
         for cookie in cookies_str.split('; '):
             cookies_dict[cookie.split('=')[0]] = cookie.split('=')[-1]
         self.cookies = cookies_dict
+
         self.uid = "UID_qNCI9uES2zahjmm8W3iGZAEB07sv"
+        # 当前应用消息title
+        self.title = "有道云笔记"
 
     # 签到
     # @param uid 微信用户id
@@ -30,10 +33,13 @@ class NoteCheckin:
         response = requests.post(url=checkin_url, cookies=self.cookies)
         resp_data = json.loads(response.text)
         print(resp_data)
-        msg = "有道云笔记：签到成功，增加空间:" + str(resp_data["space"] / 1024 / 1024) + "M"
+
         if resp_data["success"] == 1:
+            success_msg = "%s: 签到成功，增加空间: %dM" % (self.title, resp_data["space"] / 1024 / 1024)
             # 推送微信消息
-            self.push_message(uid, msg)
+            self.push_message(uid, success_msg)
+        else:
+            self.push_message(uid, "%s: 签到失败")
 
     def get_user_info(self):
         info_url = "https://note.youdao.com/yws/api/self?ClientVer=61000010000&GUID=PCaf5d9a6fe329076c9&client_ver=61000010000&device_id=PCaf5d9a6fe329076c9&device_name=DESKTOP-PBA1643&device_type=PC&keyfrom=pc&method=get&os=Windows&os_ver=Windows%2010&subvendor=&vendor=website&vendornew=website"
@@ -61,5 +67,5 @@ class NoteCheckin:
 
 # 请求数据
 note = NoteCheckin()
-# note.get_user_info()
+# # note.get_user_info()
 note.checkin(note.uid)
