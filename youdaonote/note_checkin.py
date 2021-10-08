@@ -16,7 +16,7 @@ class NoteCheckin:
             "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.107 Safari/537.36",
             "Content-Type": "text/json; charset=utf-8"
         }
-        cookies_str = "OUTFOX_SEARCH_USER_ID=829440896@118.122.120.118; JSESSIONID=aaa3DvhjED3UUbD0evHVx; YNOTE_SESS=v2|ocoqFOpFjVw4Ofgu0Mlf0eunHlWn4eyRYEnMlWhfOMRQLRfQSO4lW0OY64UWn4JyR6ynfQBnHqy0w4RflmOfqFRY5nflGn4gyR; YNOTE_LOGIN=3||1631757132180"
+        cookies_str = "OUTFOX_SEARCH_USER_ID=829440896@118.122.120.118; YNOTE_FORCE=true; YNOTE_SESS=v2|ocoqFOpFjVw4Ofgu0Mlf0eunHlWn4eyRYEnMlWhfOMRQLRfQSO4lW0OY64UWn4JyR6ynfQBnHqy0w4RflmOfqFRY5nflGn4gyR; YNOTE_LOGIN=5||1633657389355; JSESSIONID=aaaiDADDuTkHt64fwGUWx"
         cookies_dict = {}
         for cookie in cookies_str.split('; '):
             cookies_dict[cookie.split('=')[0]] = cookie.split('=')[-1]
@@ -34,12 +34,15 @@ class NoteCheckin:
         resp_data = json.loads(response.text)
         print(resp_data)
 
-        if resp_data["success"] == 1:
-            success_msg = "%s: 签到成功，增加空间: %dM" % (self.title, resp_data["space"] / 1024 / 1024)
-            # 推送微信消息
-            self.push_message(uid, success_msg)
+        if "error" in resp_data:
+            self.push_message(uid, "%s: 签到失败,%s" % (self.title, resp_data["message"]))
         else:
-            self.push_message(uid, "%s: 签到失败")
+            if resp_data["success"] == 1:
+                success_msg = "%s: 签到成功，增加空间: %dM" % (self.title, resp_data["space"] / 1024 / 1024)
+                # 推送微信消息
+                self.push_message(uid, success_msg)
+            else:
+                self.push_message(uid, "%s: 签到失败" % self.title)
 
     def get_user_info(self):
         info_url = "https://note.youdao.com/yws/api/self?ClientVer=61000010000&GUID=PCaf5d9a6fe329076c9&client_ver=61000010000&device_id=PCaf5d9a6fe329076c9&device_name=DESKTOP-PBA1643&device_type=PC&keyfrom=pc&method=get&os=Windows&os_ver=Windows%2010&subvendor=&vendor=website&vendornew=website"

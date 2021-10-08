@@ -9,6 +9,7 @@ import json
 
 import requests
 from requests import utils
+from common.title_type import TitleType
 
 
 class CsdnCheckin:
@@ -44,8 +45,6 @@ class CsdnCheckin:
         self.token = "eyJhbGciOiJSUzI1NiIsImtpZCI6IjFkNGZmZWI4LTQwNTQtNGFkZC1iM2M4LTlhOWQzZjhlMjc0OSJ9.eyJzdWIiOiJ0MTM0NDAxMTY1OTEiLCJYLUFwcElEIjoiQ1NETi1BUFAiLCJYLURldmljZS1JRCI6IkFiN0MzMDQyLUQ5NkQtNEQyNy04NzEzLTExRDNCMTVBYjQ3MCIsIlgtUmlzay1Db250cm9sLU51bSI6IjAiLCJhdWQiOiJwYXNzcG9ydCIsImV4cCI6MTYzNDUyMzQxOCwiaWF0IjoxNjMxOTMxNDE4fQ.D8gLjNqRWyQ_92WK5-jLmgKpjbTRWrdqfzeCzLF01tr4CDhQmtGpKsonWLI_6Ruiiud_ISo-BkAYIGChpSR0x38B2EWnedNt5xHxpgCAEcguxg0ZYR4yZK5c8mtIMhVJducPZf_nl8DyfvnoI6AMvCXrJIy8-WSoDuXawMiOguUYinivFiJxkbh-Z2JYUvK4QGx1QGKGnn_TxFXW-BPliSIKPFd_60PvFv4k50FBt_AXFBa6WoztFFkW--N9FSnh60gKEYTJbw36OsSNFLlAGfdWNUcud8vLw4it9iN1ZTwTUKIxiG-VIGHiAhxw8VlCFbd5xEhRvrxxoPZQSyYLsg"
         # wx 用户id
         self.uid = "UID_qNCI9uES2zahjmm8W3iGZAEB07sv"
-        # 当前应用消息title
-        self.title = "CSDN"
         self.cookie = {}
 
     # 登录
@@ -65,7 +64,7 @@ class CsdnCheckin:
             print(self.token)
         else:
             print("登录失败")
-            error_msg = "%s: 登录失败，%s" % (self.title, resp_data["message"])
+            error_msg = "%s: 登录失败，%s" % (TitleType.CSDN, resp_data["message"])
             # self.push_message(self.uid, error_msg)
 
     # 签到
@@ -80,10 +79,10 @@ class CsdnCheckin:
             resp_data = resp_json["data"]
             # 响应成功
             msg = "%s : %s,当月签到次数：%d,当前学分：%d" % (
-                self.title, resp_json["msg"], resp_data["sign_count_month"], resp_data["score"])
+                TitleType.CSDN, resp_json["msg"], resp_data["sign_count_month"], resp_data["score"])
             self.push_message(uid, msg)
         else:
-            self.push_message(uid, "%s : %s" % (self.title, resp_json["msg"]))
+            self.push_message(uid, "%s : %s" % (TitleType.CSDN, resp_json["msg"]))
 
     # 获取签到列表
     def get_user_info(self):
