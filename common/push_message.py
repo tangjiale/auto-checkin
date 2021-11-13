@@ -45,7 +45,7 @@ def __push_wx_message(title, message):
         "summary": title,
         "content": "%s: %s" % (title, message),
         "contentType": 1,
-        "uids": constants.weixin_userId
+        "uids": [constants.weixin_userId]
     }
     header = {
         "Content-Type": "application/json"
