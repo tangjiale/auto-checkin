@@ -22,7 +22,7 @@ class SttCheckin:
     # 登录
     # @param data 登录请求信息
     def login(self, data):
-        login_url = "https://sttlink.com/auth/login"
+        login_url = "https://sttlink.net/auth/login"
 
         response = requests.post(url=login_url, data=data, headers=self.header)
         print(response.text.encode().decode("unicode_escape"))
@@ -33,7 +33,7 @@ class SttCheckin:
     # 签到
     # @param uid 微信用户id
     def checkin(self, uid):
-        checkin_url = "https://sttlink.com/user/checkin"
+        checkin_url = "https://sttlink.net/user/checkin"
         response = requests.post(url=checkin_url, headers=self.header, cookies=self.cookies)
         resp_data = eval(response.text.encode().decode("unicode_escape"))
         print(resp_data)
@@ -41,7 +41,7 @@ class SttCheckin:
 
     # 获取用户信息
     def user(self):
-        user_info_url = "https://sttlink.com/user"
+        user_info_url = "https://sttlink.net/user"
         response = requests.get(url=user_info_url, headers=self.header, cookies=self.cookies)
         print(response.text)
 
