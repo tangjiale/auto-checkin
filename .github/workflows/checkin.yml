@@ -2,10 +2,10 @@ name: 自动签到
 
 on:
   push:
-    branches: dev
+    branches: master
   schedule:
     # `分 时 天 月 周` 时按照标准时间 北京时间=标准时间+8 18表示北京时间早上2点
-    - cron: "0 12 * * *"
+    - cron: "0 9 * * *"
   workflow_dispatch:
 jobs:
   build:
