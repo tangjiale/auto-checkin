@@ -9,6 +9,10 @@ import json
 
 import requests
 
+from common import constants
+from common.push_message import push_message
+from common.title_type import TitleType
+
 
 class WoShiPmCheckin:
 
@@ -22,32 +26,27 @@ class WoShiPmCheckin:
         self.access_token = "",
         # 用户密钥
         self.access_token_secret = ""
-        # 微信用户id
-        self.uid = "UID_qNCI9uES2zahjmm8W3iGZAEB07sv"
-        # 当前应用消息title
-        self.title = "人人都是产品经理"
 
     # 签到
     # @param uid 微信用户id
-    def checkin(self, uid):
+    def checkin(self):
         checkin_url = "http://api.woshipm.com/user/signUp.html?sequence=1&COMMON_ACCESS_TOKEN=%s&COMMON_ACCESS_TOKEN_SECRET=%s&_cT=IOS&_cV=4.4.8&_cA=PM" % (
             self.access_token, self.access_token_secret)
         response = requests.post(url=checkin_url, headers=self.header)
         resp_data = json.loads(response.text)
         self.header["event_location"] = "PMCheckInViewController"
         self.header["event_location_pre"] = "user_home@signin"
-        print(resp_data)
+        print("%s签到响应：%s" % (TitleType.WSPM.value[0], resp_data))
         if resp_data["CODE"] == 200:
-            success_msg = "%s：签到成功" % self.title
             # 推送微信消息
-            self.push_message(uid, success_msg)
+            push_message(TitleType.WSPM.value[0], "签到成功")
         else:
-            error_msg = "%s: 签到失败，%s" % (self.title, resp_data["MESSAGE"])
-            self.push_message(uid, error_msg)
+            error_msg = "签到失败，%s" % resp_data["MESSAGE"]
+            push_message(TitleType.WSPM.value[0], error_msg)
 
     # 登录
     # @param user_data 用户登录请求对象
-    def login(self, user_data):
+    def login(self):
         login_url = "https://passport.woshipm.com/api/loginByAPI.html?_cT=IOS&_cV=4.4.8&_cA=PM"
         login_header = {
             "Content-Type": "application/x-www-form-urlencoded",
@@ -55,16 +54,23 @@ class WoShiPmCheckin:
             "event_location": "LoginViewController",
             "event_location_pre": "woshiPM.PMQuickSignInViewController"
         }
-        response = requests.post(url=login_url, data=user_data, headers=login_header)
-        print(response.text)
+
+        # 用户登录请求参数
+        req_user_data = {
+            "FROMSYS": "WD",
+            "account": constants.wspm_username,
+            "pwd": constants.wspm_password
+        }
+        response = requests.post(url=login_url, data=req_user_data, headers=login_header)
+        print("%s登录响应：%s" % (TitleType.WSPM.value[0], response.text))
         resp_data = json.loads(response.text)
         if resp_data["CODE"] == 200:
             self.access_token = resp_data["RESULT"]["PM-Cookie"]["COMMON_ACCESS_TOKEN"]
             self.access_token_secret = resp_data["RESULT"]["PM-Cookie"]["COMMON_ACCESS_TOKEN_SECRET"]
         else:
             print("登录失败：" + resp_data["MESSAGE"])
-            error_msg = "%s: 登录失败，%s" % (self.title, resp_data["MESSAGE"])
-            self.push_message(self.uid, error_msg)
+            error_msg = "登录失败，%s" % resp_data["MESSAGE"]
+            push_message(TitleType.WSPM.value[0], error_msg)
 
     # 获取用户信息
     def get_user_info(self):
@@ -73,34 +79,9 @@ class WoShiPmCheckin:
         response = requests.get(url=info_url, headers=self.header)
         print(response.text)
 
-        # 推送信息到微信
-        # @param uid wxPusher的用户id
-        # @param message 推送消息
-
-    def push_message(self, uid, message):
-        push_url = "http://wxpusher.zjiecode.com/api/send/message"
-        req_json = {
-            "appToken": "AT_cWSuidnpkwufJ5JgF1PverQoF0cQr3No",
-            "content": message,
-            "contentType": 1,
-            "uids": [uid]
-        }
-        header = {
-            "Content-Type": "application/json"
-        }
-        response = requests.post(url=push_url, json=req_json, headers=header)
-        print(response.text)
-
-
-# 用户登录请求参数
-req_user_data = {
-    "FROMSYS": "WD",
-    "account": "15208427173",
-    "pwd": "UG1fOTExMDI2"
-}
 
 # 请求数据
-note = WoShiPmCheckin()
-note.login(req_user_data)
-# note.get_user_info()
-note.checkin(note.uid)
+# note = WoShiPmCheckin()
+# note.login()
+# # note.get_user_info()
+# note.checkin()

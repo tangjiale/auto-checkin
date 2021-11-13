@@ -8,6 +8,10 @@
 import requests
 from requests import utils
 
+from common import constants
+from common.push_message import push_message
+from common.title_type import TitleType
+
 
 class SttCheckin:
 
@@ -17,72 +21,37 @@ class SttCheckin:
             "Accept": "application/json, text/javascript, */*; q=0.01"
         }
         self.cookies = {}
-        self.title = "sttcloud"
 
     # 登录
     # @param data 登录请求信息
-    def login(self, data):
-        login_url = "https://sttlink.net/auth/login"
-
+    def login(self):
+        login_url = "%s/auth/login" % constants.stt_main
+        data = {
+            'email': constants.stt_username,
+            'passwd': constants.stt_password,
+        }
         response = requests.post(url=login_url, data=data, headers=self.header)
-        print(response.text.encode().decode("unicode_escape"))
+        print("%s登录响应：%s" % (TitleType.STT.value[0], response.text.encode().decode("unicode_escape")))
         # 获取requests请求返回的cookie
         self.cookies = requests.utils.dict_from_cookiejar(response.cookies)
         # print(self.cookies)
 
     # 签到
     # @param uid 微信用户id
-    def checkin(self, uid):
-        checkin_url = "https://sttlink.net/user/checkin"
+    def checkin(self):
+        checkin_url = "%s/user/checkin" % constants.stt_main
         response = requests.post(url=checkin_url, headers=self.header, cookies=self.cookies)
         resp_data = eval(response.text.encode().decode("unicode_escape"))
-        print(resp_data)
-        self.push_message(uid, "%s: %s" % (self.title, resp_data["msg"]))
+        print("%s签到响应：%s" % (TitleType.STT.value[0], resp_data))
+        push_message(TitleType.STT.value[0], resp_data["msg"])
 
     # 获取用户信息
     def user(self):
-        user_info_url = "https://sttlink.net/user"
+        user_info_url = "%s/user" % constants.stt_main
         response = requests.get(url=user_info_url, headers=self.header, cookies=self.cookies)
         print(response.text)
 
-    # 推送信息到微信
-    # @param uid wxPusher的用户id
-    # @param message 推送消息
-    def push_message(self, uid, message):
-        push_url = "http://wxpusher.zjiecode.com/api/send/message"
-        req_json = {
-            "appToken": "AT_cWSuidnpkwufJ5JgF1PverQoF0cQr3No",
-            "content": message,
-            "contentType": 1,
-            "uids": [uid]
-        }
-        header = {
-            "Content-Type": "application/json"
-        }
-        response = requests.post(url=push_url, json=req_json, headers=header)
-        print(response.text)
-
-
-# 请求数据
-req_data_list = [
-    {
-        'email': '243185722@qq.com',
-        'passwd': 'yw121175',
-        "uid": "UID_0Rh0jmzXf7Oi9GbfzXQijAUKALSh"
-    }, {
-        'email': 'jialesmile@foxmail.com',
-        'passwd': 'stt_911026',
-        "uid": "UID_qNCI9uES2zahjmm8W3iGZAEB07sv"
-    }
-]
-stt = SttCheckin()
-for req_data in req_data_list:
-    data = {
-        "email": req_data["email"],
-        "passwd": req_data["passwd"]
-    }
-    stt.login(data)
-    stt.checkin(req_data["uid"])
-    # stt.user()
-
-# stt.push_message("UID_qNCI9uES2zahjmm8W3iGZAEB07sv", "您似乎已经签到过了...")
+# stt = SttCheckin()
+# stt.login()
+# stt.checkin()
+##  stt.user()

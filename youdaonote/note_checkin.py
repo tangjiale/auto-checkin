@@ -7,6 +7,9 @@
 # @Software: PyCharm
 import json
 import requests
+from common import constants
+from common.push_message import push_message
+from common.title_type import TitleType
 
 
 class NoteCheckin:
@@ -16,59 +19,36 @@ class NoteCheckin:
             "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.107 Safari/537.36",
             "Content-Type": "text/json; charset=utf-8"
         }
-        cookies_str = "OUTFOX_SEARCH_USER_ID=829440896@118.122.120.118; YNOTE_LOGIN=3||1634799006503; YNOTE_FORCE=true; JSESSIONID=aaaVDuslcnRmbczoFhzYx; YNOTE_SESS=v2|fF1MO-AydVPFnHeLhMqL0JS0fYMOMpy0pFk4YMnfey0PK6LJLPMOG0UGhHl5P4wy0kA0Hey0HkMRO5kMpLhHl50g4RLgFkfOfR"
+        cookies_str = constants.ynote_cookie
         cookies_dict = {}
         for cookie in cookies_str.split('; '):
             cookies_dict[cookie.split('=')[0]] = cookie.split('=')[-1]
         self.cookies = cookies_dict
 
-        self.uid = "UID_qNCI9uES2zahjmm8W3iGZAEB07sv"
-        # 当前应用消息title
-        self.title = "有道云笔记"
-
     # 签到
     # @param uid 微信用户id
-    def checkin(self, uid):
+    def checkin(self):
         checkin_url = "https://note.youdao.com/yws/mapi/user?method=checkin"
         response = requests.post(url=checkin_url, cookies=self.cookies)
         resp_data = json.loads(response.text)
-        print(resp_data)
-
+        print("%s签到响应：%s" % (TitleType.YNote.value[0], resp_data))
         if "error" in resp_data:
-            self.push_message(uid, "%s: 签到失败,%s" % (self.title, resp_data["message"]))
+            push_message(TitleType.YNote.value[0], "签到失败,%s" % resp_data["message"])
         else:
             if resp_data["success"] == 1:
-                success_msg = "%s: 签到成功，增加空间: %dM" % (self.title, resp_data["space"] / 1024 / 1024)
+                success_msg = "签到成功，增加空间: %dM" % (resp_data["space"] / 1024 / 1024)
                 # 推送微信消息
-                self.push_message(uid, success_msg)
+                push_message(TitleType.YNote.value[0], success_msg)
             else:
-                self.push_message(uid, "%s: 签到失败" % self.title)
+                push_message(TitleType.YNote.value[0], "签到失败")
 
     def get_user_info(self):
         info_url = "https://note.youdao.com/yws/api/self?ClientVer=61000010000&GUID=PCaf5d9a6fe329076c9&client_ver=61000010000&device_id=PCaf5d9a6fe329076c9&device_name=DESKTOP-PBA1643&device_type=PC&keyfrom=pc&method=get&os=Windows&os_ver=Windows%2010&subvendor=&vendor=website&vendornew=website"
         response = requests.post(url=info_url, cookies=self.cookies)
         print(response.text)
 
-        # 推送信息到微信
-        # @param uid wxPusher的用户id
-        # @param message 推送消息
-
-    def push_message(self, uid, message):
-        push_url = "http://wxpusher.zjiecode.com/api/send/message"
-        req_json = {
-            "appToken": "AT_cWSuidnpkwufJ5JgF1PverQoF0cQr3No",
-            "content": message,
-            "contentType": 1,
-            "uids": [uid]
-        }
-        header = {
-            "Content-Type": "application/json"
-        }
-        response = requests.post(url=push_url, json=req_json, headers=header)
-        print(response.text)
-
 
 # 请求数据
-note = NoteCheckin()
-# # note.get_user_info()
-note.checkin(note.uid)
+# note = NoteCheckin()
+# # # note.get_user_info()
+# note.checkin()
