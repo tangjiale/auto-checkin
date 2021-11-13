@@ -42,7 +42,7 @@ def __push_wx_message(title, message):
     push_url = "http://wxpusher.zjiecode.com/api/send/message"
     req_json = {
         "appToken": constants.weixin_appToken,
-        "summary": title,
+        "summary": "%s: %s" % (title, message),
         "content": "%s: %s" % (title, message),
         "contentType": 1,
         "uids": [constants.weixin_userId]
