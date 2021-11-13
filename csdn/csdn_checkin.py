@@ -64,7 +64,7 @@ class CsdnCheckin:
             print(self.token)
         else:
             print("登录失败")
-            error_msg = "%s: 登录失败，%s" % (TitleType.CSDN, resp_data["message"])
+            error_msg = "%s: 登录失败，%s" % (TitleType.CSDN.value, resp_data["message"])
             # self.push_message(self.uid, error_msg)
 
     # 签到
@@ -79,10 +79,10 @@ class CsdnCheckin:
             resp_data = resp_json["data"]
             # 响应成功
             msg = "%s : %s,当月签到次数：%d,当前学分：%d" % (
-                TitleType.CSDN, resp_json["msg"], resp_data["sign_count_month"], resp_data["score"])
+                TitleType.CSDN.value, resp_json["msg"], resp_data["sign_count_month"], resp_data["score"])
             self.push_message(uid, msg)
         else:
-            self.push_message(uid, "%s : %s" % (TitleType.CSDN, resp_json["msg"]))
+            self.push_message(uid, "%s : %s" % (TitleType.CSDN.value, resp_json["msg"]))
 
     # 获取签到列表
     def get_user_info(self):

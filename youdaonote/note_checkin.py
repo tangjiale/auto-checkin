@@ -31,17 +31,16 @@ class NoteCheckin:
         checkin_url = "https://note.youdao.com/yws/mapi/user?method=checkin"
         response = requests.post(url=checkin_url, cookies=self.cookies)
         resp_data = json.loads(response.text)
-        print(resp_data)
-
+        print("%s签到响应：%s" % (TitleType.YNote.value, resp_data))
         if "error" in resp_data:
-            push_message(TitleType.YNote, "签到失败,%s" % resp_data["message"])
+            push_message(TitleType.YNote.value, "签到失败,%s" % resp_data["message"])
         else:
             if resp_data["success"] == 1:
                 success_msg = "签到成功，增加空间: %dM" % (resp_data["space"] / 1024 / 1024)
                 # 推送微信消息
-                push_message(TitleType.YNote, success_msg)
+                push_message(TitleType.YNote.value, success_msg)
             else:
-                push_message(TitleType.YNote, "签到失败")
+                push_message(TitleType.YNote.value, "签到失败")
 
     def get_user_info(self):
         info_url = "https://note.youdao.com/yws/api/self?ClientVer=61000010000&GUID=PCaf5d9a6fe329076c9&client_ver=61000010000&device_id=PCaf5d9a6fe329076c9&device_name=DESKTOP-PBA1643&device_type=PC&keyfrom=pc&method=get&os=Windows&os_ver=Windows%2010&subvendor=&vendor=website&vendornew=website"
@@ -50,6 +49,6 @@ class NoteCheckin:
 
 
 # 请求数据
-note = NoteCheckin()
-# # note.get_user_info()
-note.checkin()
+# note = NoteCheckin()
+# # # note.get_user_info()
+# note.checkin()
