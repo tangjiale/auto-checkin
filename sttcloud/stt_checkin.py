@@ -31,7 +31,7 @@ class SttCheckin:
             'passwd': constants.stt_password,
         }
         response = requests.post(url=login_url, data=data, headers=self.header)
-        print("%s登录响应：%s" % (TitleType.STT.value, response.text.encode().decode("unicode_escape")))
+        print("%s登录响应：%s" % (TitleType.STT.value[0], response.text.encode().decode("unicode_escape")))
         # 获取requests请求返回的cookie
         self.cookies = requests.utils.dict_from_cookiejar(response.cookies)
         # print(self.cookies)
@@ -42,8 +42,8 @@ class SttCheckin:
         checkin_url = "%s/user/checkin" % constants.stt_main
         response = requests.post(url=checkin_url, headers=self.header, cookies=self.cookies)
         resp_data = eval(response.text.encode().decode("unicode_escape"))
-        print("%s签到响应：%s" % (TitleType.STT.value, resp_data))
-        push_message(TitleType.STT.value, resp_data["msg"])
+        print("%s签到响应：%s" % (TitleType.STT.value[0], resp_data))
+        push_message(TitleType.STT.value[0], resp_data["msg"])
 
     # 获取用户信息
     def user(self):

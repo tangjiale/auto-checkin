@@ -36,13 +36,13 @@ class WoShiPmCheckin:
         resp_data = json.loads(response.text)
         self.header["event_location"] = "PMCheckInViewController"
         self.header["event_location_pre"] = "user_home@signin"
-        print("%s签到响应：%s" % (TitleType.WSPM.value, resp_data))
+        print("%s签到响应：%s" % (TitleType.WSPM.value[0], resp_data))
         if resp_data["CODE"] == 200:
             # 推送微信消息
-            push_message(TitleType.WSPM.value, "签到成功")
+            push_message(TitleType.WSPM.value[0], "签到成功")
         else:
             error_msg = "签到失败，%s" % resp_data["MESSAGE"]
-            push_message(TitleType.WSPM.value, error_msg)
+            push_message(TitleType.WSPM.value[0], error_msg)
 
     # 登录
     # @param user_data 用户登录请求对象
@@ -62,7 +62,7 @@ class WoShiPmCheckin:
             "pwd": constants.wspm_password
         }
         response = requests.post(url=login_url, data=req_user_data, headers=login_header)
-        print("%s登录响应：%s" % (TitleType.WSPM.value, response.text))
+        print("%s登录响应：%s" % (TitleType.WSPM.value[0], response.text))
         resp_data = json.loads(response.text)
         if resp_data["CODE"] == 200:
             self.access_token = resp_data["RESULT"]["PM-Cookie"]["COMMON_ACCESS_TOKEN"]
@@ -70,7 +70,7 @@ class WoShiPmCheckin:
         else:
             print("登录失败：" + resp_data["MESSAGE"])
             error_msg = "登录失败，%s" % resp_data["MESSAGE"]
-            push_message(TitleType.WSPM.value, error_msg)
+            push_message(TitleType.WSPM.value[0], error_msg)
 
     # 获取用户信息
     def get_user_info(self):

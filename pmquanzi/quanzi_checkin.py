@@ -37,30 +37,30 @@ class QuanziCheckin:
             'password': constants.pmqz_password
         }
         response = requests.post(url=login_url, data=data, headers=self.header)
-        print("%s登录响应：%s" % (TitleType.PMQZ.value, response.text))
+        print("%s登录响应：%s" % (TitleType.PMQZ.value[0], response.text))
         # 获取requests请求返回的token
         resp_data = json.loads(response.text)
         if resp_data["status"] == 1:
             self.req_data["token"] = resp_data["data"]["token"]
         else:
             error_msg = "登录失败，%s" % resp_data["msg"]
-            push_message(TitleType.PMQZ.value, error_msg)
+            push_message(TitleType.PMQZ.value[0], error_msg)
 
     # 签到
     def checkin(self):
         checkin_url = "http://www.pmquanzi.com/api/user/qiandao_new"
         response = requests.post(url=checkin_url, data=self.req_data, headers=self.header)
         resp_json = json.loads(response.text)
-        print("%s签到响应：%s" % (TitleType.PMQZ.value, resp_json))
+        print("%s签到响应：%s" % (TitleType.PMQZ.value[0], resp_json))
         if resp_json["status"] == 1:
             # 返回的data数据
             resp_data = resp_json["data"]
             # 响应成功
             msg = "%s,当月签到次数：%d,当前学分：%d" % (
                 resp_json["msg"], resp_data["sign_count_month"], resp_data["score"])
-            push_message(TitleType.PMQZ.value, msg)
+            push_message(TitleType.PMQZ.value[0], msg)
         else:
-            push_message(TitleType.PMQZ.value, "%s" % resp_json["msg"])
+            push_message(TitleType.PMQZ.value[0], "%s" % resp_json["msg"])
 
     # 获取签到列表
     def get_checkin_list(self):
