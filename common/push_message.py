@@ -7,33 +7,45 @@
 # @Software: PyCharm
 import requests
 from common.push_type import PushType
+from common import constants
+
+
+# 根据类型统一消息推送
+# @param push_type 消息推送类型 PushType
+# @param title 消息标题
+# @param message 推送消息
+def push_type_message(push_type: PushType, title, message):
+    if push_type == PushType.WX:
+        __push_wx_message(title, message)
+    elif push_type == PushType.BARK:
+        __push_ios_bark_message(title, message, "")
+    else:
+        __push_ios_bark_message(title, message, "")
 
 
 # 统一消息推送
-# @param push_type 消息推送类型 PushType
-# @param uid 用户id
 # @param title 消息标题
 # @param message 推送消息
-def push_message(push_type: PushType, uid, title, message):
-    if push_type == PushType.WX:
-        __push_wx_message(uid, title, message)
-    elif push_type == PushType.BARK:
-        __push_ios_bark_message(uid, title, message, "")
+def push_message(title, message):
+    if constants.push_type == "WX":
+        __push_wx_message(title, message)
+    elif constants.push_type == "BARK":
+        __push_ios_bark_message(title, message, "")
     else:
-        print("消息推送类型不存在")
+        __push_ios_bark_message(title, message, "")
 
 
 # 推送信息到微信
 # @param uid wxPusher的用户id
 # @param message 推送消息
-def __push_wx_message(uid, title, message):
+def __push_wx_message(title, message):
     push_url = "http://wxpusher.zjiecode.com/api/send/message"
     req_json = {
-        "appToken": "AT_cWSuidnpkwufJ5JgF1PverQoF0cQr3No",
+        "appToken": constants.weixin_appToken,
         "summary": title,
-        "content": message,
+        "content": "%s: %s" % (title, message),
         "contentType": 1,
-        "uids": [uid]
+        "uids": constants.weixin_userId
     }
     header = {
         "Content-Type": "application/json"
@@ -46,8 +58,8 @@ def __push_wx_message(uid, title, message):
 # @param uid 用户唯一key
 # @param title 通知消息标题
 # @param message 通知消息正文
-def __push_ios_bark_message(uid, title, message, category):
-    push_url = "https://api.day.app/%s" % uid
+def __push_ios_bark_message(title, message, category):
+    push_url = "https://api.day.app/%s" % constants.bark_key
     req_json = {
         "title": title,
         "body": message,

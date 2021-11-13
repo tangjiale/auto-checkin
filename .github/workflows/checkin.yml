@@ -1,6 +1,8 @@
 name: 自动签到
 
 on:
+  push:
+    branches: dev
   schedule:
     # `分 时 天 月 周` 时按照标准时间 北京时间=标准时间+8 18表示北京时间早上2点
     - cron: "0 12 * * *"
@@ -30,4 +32,4 @@ jobs:
           BARK_KEY: ${{ secrets.BARK_KEY }}
           WEIXIN_UID: ${{ secrets.WEIXIN_UID }}
           WEIXIN_APP_TOKEN: ${{ secrets.WEIXIN_APP_TOKEN }}
-        run: python youdaonote/note_checkin.py
+        run: python main.py
