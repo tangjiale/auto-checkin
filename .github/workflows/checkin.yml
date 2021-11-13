@@ -30,4 +30,4 @@ jobs:
           BARK_KEY: ${{ secrets.BARK_KEY }}
           WEIXIN_UID: ${{ secrets.WEIXIN_UID }}
           WEIXIN_APP_TOKEN: ${{ secrets.WEIXIN_APP_TOKEN }}
-        run: python ../../youdaonote/note_checkin.py
+        run: python ./youdaonote/note_checkin.py
