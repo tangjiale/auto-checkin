@@ -32,4 +32,5 @@ jobs:
           BARK_KEY: ${{ secrets.BARK_KEY }}
           WEIXIN_UID: ${{ secrets.WEIXIN_UID }}
           WEIXIN_APP_TOKEN: ${{ secrets.WEIXIN_APP_TOKEN }}
+          PUSH_TYPE: ${{ secrets.PUSH_TYPE }}
         run: python main.py
