@@ -3,7 +3,7 @@
 # @Time    : 2021-09-06 10:10
 # @Author  : jiale
 # @Site    : 用于有道笔记自动签到获取存储空间
-# @File    : note_checkin.py
+# @File    : ynote.py
 # @Software: PyCharm
 import json
 import requests

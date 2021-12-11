@@ -3,7 +3,7 @@
 # @Time    : 2021-12-10 17:12
 # @Author  : jiale
 # @Site    : 掘金签到获取矿石并抽奖
-# @File    : juejin_checkin.py
+# @File    : juejin.py
 # @Software: PyCharm
 import json
 

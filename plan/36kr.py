@@ -3,7 +3,7 @@
 # @Time    : 2021-10-09 15:28
 # @Author  : jiale
 # @Site    : 36kr签到得积分
-# @File    : 36kr_checkin.py
+# @File    : 36kr.py
 # @Software: PyCharm
 import json
 

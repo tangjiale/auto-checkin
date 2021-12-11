@@ -3,7 +3,7 @@
 # @Time    : 2021-09-15 22:25
 # @Author  : jiale
 # @Site    : 用于管理圈app 自动签到获得学分
-# @File    : csdn_checkin.py
+# @File    : csdn.py
 # @Software: PyCharm
 import json
 

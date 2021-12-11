@@ -3,7 +3,7 @@
 # @Time    : 2021-08-17 10:15
 # @Author  : jiale
 # @Site    : 用于stt_cloud 自动签到获得流量
-# @File    : stt_checkin.py
+# @File    : sttcloud.py
 # @Software: PyCharm
 import requests
 from requests import utils

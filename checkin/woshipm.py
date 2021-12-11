@@ -3,7 +3,7 @@
 # @Time    : 2021-09-06 10:10
 # @Author  : jiale
 # @Site    : 用户人人都是产品经理自动签到获取成长值
-# @File    : woshipm_checkin.py
+# @File    : woshipm.py
 # @Software: PyCharm
 import json
 
