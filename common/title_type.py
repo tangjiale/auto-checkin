@@ -15,3 +15,4 @@ class TitleType(Enum):
     STT = "SttCloud",
     WSPM = "人人都是产品经理",
     YNote = "有道云笔记",
+    JueJin = "掘金",

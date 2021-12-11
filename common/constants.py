@@ -29,6 +29,9 @@ wspm_password = env.get("WSPM_PASSWORD")
 # 有道云笔记
 ynote_cookie = env.get("YNOTE_COOKIE")
 
+# 掘金
+juejin_cookie = env.get("JUEJIN_COOKIE")
+
 # ios bark
 bark_key = env.get("BARK_KEY")
 

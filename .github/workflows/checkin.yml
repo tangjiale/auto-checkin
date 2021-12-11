@@ -31,4 +31,5 @@ jobs:
           WEIXIN_UID: ${{ secrets.WEIXIN_UID }}
           WEIXIN_APP_TOKEN: ${{ secrets.WEIXIN_APP_TOKEN }}
           PUSH_TYPE: ${{ secrets.PUSH_TYPE }}
+          JUEJIN_COOKIE: ${{ secrets.JUEJIN_COOKIE }}
         run: python main.py
