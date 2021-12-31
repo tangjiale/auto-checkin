@@ -20,7 +20,7 @@ def push_type_message(push_type: PushType, title, message):
     elif push_type == PushType.BARK:
         __push_ios_bark_message(title, message, "")
     else:
-        __push_ios_bark_message(title, message, "")
+        return None
 
 
 # 统一消息推送
@@ -32,7 +32,7 @@ def push_message(title, message):
     elif constants.push_type == "BARK":
         __push_ios_bark_message(title, message, "")
     else:
-        __push_ios_bark_message(title, message, "")
+        return None
 
 
 # 推送信息到微信
@@ -70,9 +70,3 @@ def __push_ios_bark_message(title, message, category):
     }
     response = requests.post(url=push_url, json=req_json, headers=header)
     print(response.text)
-
-
-
-
-# stt.push_message("UID_qNCI9uES2zahjmm8W3iGZAEB07sv", "您似乎已经签到过了...")
-# push_message(PushType.WX,"PBF2K8wMRPdj5bKhcdiy6G", "管理圈", "您似乎已经签到过了...")
