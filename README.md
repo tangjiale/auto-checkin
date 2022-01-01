@@ -10,11 +10,11 @@
 
 ### 使用方式
 1. `fork` 本项目。
-![Fork项目](https://github.com/tangjiale/auto-checkin/tree/master/statics/imgs/fork.png)
+![Fork项目](./statics/imgs/fork.png)
 2. 依次点击【Setting】、【Secrets】、【New repository secret】。
-![New repository secret](https://github.com/tangjiale/auto-checkin/tree/master/statics/imgs/secrets.png)
+![New repository secret](./statics/imgs/secrets.png)
 3. 把 Name 设置为 环境变量KEY,Value为环境变量的VALUE.
-![action-secrets](https://github.com/tangjiale/auto-checkin/tree/master/statics/imgs/action-secrets.png)
+![action-secrets](./statics/imgs/action-secrets.png)
 
 环境变量参数根据签到产品设置
  - 人人都是产品经理
@@ -32,7 +32,7 @@
     WSPM_USER_NAME = 账号
     WSPM_PASSWORD = 密码
 4. 允许 Github Actions 工作流。
-![enable](https://github.com/tangjiale/auto-checkin/tree/master/statics/imgs/enable.png)
+![enable](./statics/imgs/enable.png)
 ### 定时任务执行时间修改
 本程序默认是在北京时间10点去执行，如果需要修改签到时间，可以修改`.github/workflows/check_in.yml`文件中的`cron`字段，该字段文档可以[查看这里](https://docs.github.com/en/actions/reference/events-that-trigger-workflows)。
 
