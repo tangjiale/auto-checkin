@@ -26,7 +26,8 @@ qz = quanzi.QuanziCheckin()
 qz.login()
 qz.checkin()
 
-# 5. 掘金 签到获得钻石并抽奖
+# 5. 掘金 签到获得钻石并抽奖，并沾福气
 jj = juejin.JueJinCheckin()
 jj.checkin()
 jj.draw()
+jj.dip_luck()

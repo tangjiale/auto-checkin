@@ -51,6 +51,24 @@ class JueJinCheckin:
         resp_data = json.loads(response.text)
         print("%s获取总矿石响应：%s" % (TitleType.JueJin.value[0], resp_data))
 
+    # 沾福气
+    def dip_luck(self):
+        info_url = "https://api.juejin.cn/growth_api/v1/lottery_lucky/dip_lucky?aid=2608&uuid=7040367811554510371"
+        response = requests.get(url=info_url, cookies=self.cookies)
+        # 响应：{"err_no":0,"err_msg":"success","data":{"dip_action":1,"has_dip":false,"total_value":1679,"dip_value":10}}
+        resp_data = json.loads(response.text)
+        print("%s查询抽奖信息响应：%s" % (TitleType.JueJin.value[0], resp_data))
+        if 0 == resp_data["err_no"]:
+            if resp_data["err_msg"] == 'success':
+                success_msg = "沾福气成功，获得幸运点数: %dM" % (resp_data["data"]["dip_value"])
+                # 推送消息
+                push_message(TitleType.JueJin.value[0], success_msg)
+            else:
+                push_message(TitleType.JueJin.value[0], "沾福气失败: %s" % resp_data["err_msg"])
+        else:
+            push_message(TitleType.JueJin.value[0], "沾福气失败,%s" % resp_data["err_msg"])
+        return resp_data
+
     # 获取抽奖信息
     def get_draw_info(self):
         info_url = "https://api.juejin.cn/growth_api/v1/lottery_config/get"
