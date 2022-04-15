@@ -46,7 +46,9 @@ class QuanziCheckin:
 
     # 签到
     def checkin(self):
-        self.login()
+        login_result = self.login()
+        if login_result:
+            return login_result
         checkin_url = "http://www.pmquanzi.com/api/user/qiandao_new"
         response = requests.post(url=checkin_url, data=self.req_data, headers=self.header)
         resp_json = json.loads(response.text)
