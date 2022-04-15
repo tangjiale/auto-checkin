@@ -10,7 +10,6 @@ import json
 import requests
 
 from common import constants
-from common.push_message import push_message
 from common.title_type import TitleType
 
 
@@ -35,13 +34,11 @@ class JueJinCheckin:
         print("%s签到响应：%s" % (TitleType.JueJin.value[0], resp_data))
         if 0 == resp_data["err_no"]:
             if resp_data["err_msg"] == 'success':
-                success_msg = "签到成功，增加矿石: %dM" % (resp_data["data"]["incr_point"])
-                # 推送消息
-                push_message(TitleType.JueJin.value[0], success_msg)
+                return "签到成功，增加矿石: %dM" % (resp_data["data"]["incr_point"])
             else:
-                push_message(TitleType.JueJin.value[0], "签到失败: %s" % resp_data["err_msg"])
+                return "签到失败: %s" % resp_data["err_msg"]
         else:
-            push_message(TitleType.JueJin.value[0], "签到失败,%s" % resp_data["err_msg"])
+            return "签到失败,%s" % resp_data["err_msg"]
 
     # 获取总矿石
     def get_cur_point(self):
@@ -57,17 +54,14 @@ class JueJinCheckin:
         response = requests.post(url=info_url, cookies=self.cookies)
         # 响应：{"err_no":0,"err_msg":"success","data":{"dip_action":1,"has_dip":false,"total_value":1679,"dip_value":10}}
         resp_data = json.loads(response.text)
-        print("%s查询抽奖信息响应：%s" % (TitleType.JueJin.value[0], resp_data))
+        print("%s沾福气信息响应：%s" % (TitleType.JueJin.value[0], resp_data))
         if 0 == resp_data["err_no"]:
             if resp_data["err_msg"] == 'success':
-                success_msg = "沾福气成功，获得幸运点数: %dM" % (resp_data["data"]["dip_value"])
-                # 推送消息
-                push_message(TitleType.JueJin.value[0], success_msg)
+                return "沾福气成功，获得幸运点数: %d" % (resp_data["data"]["dip_value"])
             else:
-                push_message(TitleType.JueJin.value[0], "沾福气失败: %s" % resp_data["err_msg"])
+                return "沾福气失败: %s" % resp_data["err_msg"]
         else:
-            push_message(TitleType.JueJin.value[0], "沾福气失败,%s" % resp_data["err_msg"])
-        return resp_data
+            return "沾福气失败,%s" % resp_data["err_msg"]
 
     # 获取抽奖信息
     def get_draw_info(self):
@@ -88,12 +82,14 @@ class JueJinCheckin:
                 resp_data = json.loads(response.text)
                 print("%s抽奖响应：%s" % (TitleType.JueJin.value[0], resp_data))
                 if resp_data["err_no"] == 0:
-                    if "Bug" != resp_data["data"]["lottery_name"]:
-                        push_message(TitleType.JueJin.value[0], "中奖了: %s" % resp_data["data"]["lottery_name"])
+                    if "Bug" != resp_data["data"]["lottery"]["lottery_name"]:
+                        return "中奖了: %s" % resp_data["data"]["lottery"]["lottery_name"]
                 else:
-                    push_message(TitleType.JueJin.value[0], "抽奖失败: %s" % resp_data["err_msg"])
+                    return "抽奖失败: %s" % resp_data["err_msg"]
+            else:
+                return "今日已抽奖"
         else:
-            push_message(TitleType.JueJin.value[0], "获取抽奖信息失败: %s" % draw_info["err_msg"])
+            return "获取抽奖信息失败: %s" % draw_info["err_msg"]
 
     # 获取用户信息
     def get_user_info(self):

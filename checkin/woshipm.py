@@ -10,7 +10,6 @@ import json
 import requests
 
 from common import constants
-from common.push_message import push_message
 from common.title_type import TitleType
 
 
@@ -30,6 +29,7 @@ class WoShiPmCheckin:
     # 签到
     # @param uid 微信用户id
     def checkin(self):
+        self.login()
         checkin_url = "http://api.woshipm.com/user/signUp.html?sequence=1&COMMON_ACCESS_TOKEN=%s&COMMON_ACCESS_TOKEN_SECRET=%s&_cT=IOS&_cV=4.4.8&_cA=PM" % (
             self.access_token, self.access_token_secret)
         response = requests.post(url=checkin_url, headers=self.header)
@@ -39,10 +39,9 @@ class WoShiPmCheckin:
         print("%s签到响应：%s" % (TitleType.WSPM.value[0], resp_data))
         if resp_data["CODE"] == 200:
             # 推送微信消息
-            push_message(TitleType.WSPM.value[0], "签到成功")
+            return "签到成功"
         else:
-            error_msg = "签到失败，%s" % resp_data["MESSAGE"]
-            push_message(TitleType.WSPM.value[0], error_msg)
+            return "签到失败，%s" % resp_data["MESSAGE"]
 
     # 登录
     # @param user_data 用户登录请求对象
@@ -69,8 +68,7 @@ class WoShiPmCheckin:
             self.access_token_secret = resp_data["RESULT"]["PM-Cookie"]["COMMON_ACCESS_TOKEN_SECRET"]
         else:
             print("登录失败：" + resp_data["MESSAGE"])
-            error_msg = "登录失败，%s" % resp_data["MESSAGE"]
-            push_message(TitleType.WSPM.value[0], error_msg)
+            return "登录失败，%s" % resp_data["MESSAGE"]
 
     # 获取用户信息
     def get_user_info(self):
@@ -78,7 +76,6 @@ class WoShiPmCheckin:
             self.access_token, self.access_token_secret)
         response = requests.get(url=info_url, headers=self.header)
         print(response.text)
-
 
 # 请求数据
 # note = WoShiPmCheckin()

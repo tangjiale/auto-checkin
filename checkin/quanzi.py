@@ -10,7 +10,6 @@ import json
 import requests
 
 from common import constants
-from common.push_message import push_message
 from common.title_type import TitleType
 
 
@@ -43,11 +42,11 @@ class QuanziCheckin:
         if resp_data["status"] == 1:
             self.req_data["token"] = resp_data["data"]["token"]
         else:
-            error_msg = "登录失败，%s" % resp_data["msg"]
-            push_message(TitleType.PMQZ.value[0], error_msg)
+            return "登录失败，%s" % resp_data["msg"]
 
     # 签到
     def checkin(self):
+        self.login()
         checkin_url = "http://www.pmquanzi.com/api/user/qiandao_new"
         response = requests.post(url=checkin_url, data=self.req_data, headers=self.header)
         resp_json = json.loads(response.text)
@@ -56,11 +55,10 @@ class QuanziCheckin:
             # 返回的data数据
             resp_data = resp_json["data"]
             # 响应成功
-            msg = "%s,当月签到次数：%d,当前学分：%d" % (
+            return "%s,当月签到次数：%d,当前学分：%d" % (
                 resp_json["msg"], resp_data["sign_count_month"], resp_data["score"])
-            push_message(TitleType.PMQZ.value[0], msg)
         else:
-            push_message(TitleType.PMQZ.value[0], "%s" % resp_json["msg"])
+            return resp_json["msg"]
 
     # 获取签到列表
     def get_checkin_list(self):

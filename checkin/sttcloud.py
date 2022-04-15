@@ -9,7 +9,6 @@ import requests
 from requests import utils
 
 from common import constants
-from common.push_message import push_message
 from common.title_type import TitleType
 
 
@@ -39,11 +38,12 @@ class SttCheckin:
     # 签到
     # @param uid 微信用户id
     def checkin(self):
+        self.login()
         checkin_url = "%s/user/checkin" % constants.stt_main
         response = requests.post(url=checkin_url, headers=self.header, cookies=self.cookies)
         resp_data = eval(response.text.encode().decode("unicode_escape"))
         print("%s签到响应：%s" % (TitleType.STT.value[0], resp_data))
-        push_message(TitleType.STT.value[0], resp_data["msg"])
+        return resp_data["msg"]
 
     # 获取用户信息
     def user(self):
