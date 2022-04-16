@@ -79,6 +79,11 @@ class JueJinCheckin:
             if draw_info["data"]["free_count"] > 0:
                 draw_url = "https://api.juejin.cn/growth_api/v1/lottery/draw"
                 response = requests.post(url=draw_url, cookies=self.cookies)
+                # 响应 ： {'err_no': 0, 'err_msg': 'success', 'data': {'id': 19, 'lottery_id': '6981716980386496552',
+                # 'lottery_name': '11矿石', 'lottery_type': 1, 'lottery_image':
+                # 'https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/32ed6a7619934144882d841761b63d3c~tplv-k3u1fbpfcp
+                # -no-mark:0:0:0:0.image', 'lottery_desc': '', 'history_id': '7087024855945576482',
+                # 'total_lucky_value': 1699, 'draw_lucky_value': 10}}
                 resp_data = json.loads(response.text)
                 print("%s抽奖响应：%s" % (TitleType.JueJin.value[0], resp_data))
                 if resp_data["err_no"] == 0:
