@@ -82,8 +82,8 @@ class JueJinCheckin:
                 resp_data = json.loads(response.text)
                 print("%s抽奖响应：%s" % (TitleType.JueJin.value[0], resp_data))
                 if resp_data["err_no"] == 0:
-                    if "Bug" != resp_data["data"]["lottery"]["lottery_name"]:
-                        return "中奖了: %s" % resp_data["data"]["lottery"]["lottery_name"]
+                    if "Bug" != resp_data["data"]["lottery_name"]:
+                        return "中奖了: %s" % resp_data["data"]["lottery_name"]
                 else:
                     return "抽奖失败: %s" % resp_data["err_msg"]
             else:
