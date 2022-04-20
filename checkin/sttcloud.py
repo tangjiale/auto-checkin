@@ -38,7 +38,9 @@ class SttCheckin:
     # 签到
     # @param uid 微信用户id
     def checkin(self):
-        self.login()
+        login_result = self.login()
+        if login_result:
+            return login_result
         checkin_url = "%s/user/checkin" % constants.stt_main
         response = requests.post(url=checkin_url, headers=self.header, cookies=self.cookies)
         resp_data = eval(response.text.encode().decode("unicode_escape"))

@@ -29,7 +29,9 @@ class WoShiPmCheckin:
     # 签到
     # @param uid 微信用户id
     def checkin(self):
-        self.login()
+        login_result = self.login()
+        if login_result:
+            return login_result
         checkin_url = "http://api.woshipm.com/user/signUp.html?sequence=1&COMMON_ACCESS_TOKEN=%s&COMMON_ACCESS_TOKEN_SECRET=%s&_cT=IOS&_cV=4.4.8&_cA=PM" % (
             self.access_token, self.access_token_secret)
         response = requests.post(url=checkin_url, headers=self.header)
@@ -57,8 +59,8 @@ class WoShiPmCheckin:
         # 用户登录请求参数
         req_user_data = {
             "FROMSYS": "WD",
-            "account": constants.wspm_username,
-            "pwd": constants.wspm_password
+            "account": "152084217173",
+            "pwd": "Pm_911026"
         }
         response = requests.post(url=login_url, data=req_user_data, headers=login_header)
         print("%s登录响应：%s" % (TitleType.WSPM.value[0], response.text))
@@ -78,7 +80,7 @@ class WoShiPmCheckin:
         print(response.text)
 
 # 请求数据
-# note = WoShiPmCheckin()
+note = WoShiPmCheckin()
 # note.login()
 # # note.get_user_info()
-# note.checkin()
+print(note.checkin())

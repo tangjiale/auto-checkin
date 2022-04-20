@@ -42,6 +42,6 @@ jj = juejin.JueJinCheckin()
 resp_checkin = jj.checkin()
 resp_draw = jj.draw()
 resp_dip_luck = jj.dip_luck()
-jj_msg = "签到：%s\n 抽奖：%s \n沾福气：%s" % (resp_checkin, resp_draw, resp_dip_luck)
+jj_msg = "签到：%s\n抽奖：%s \n沾福气：%s" % (resp_checkin, resp_draw, resp_dip_luck)
 # 推送消息
 push_message(TitleType.JueJin.value[0], jj_msg)
