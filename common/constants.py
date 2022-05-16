@@ -38,3 +38,6 @@ bark_key = env.get("BARK_KEY")
 # 微信公众号
 weixin_userId = env.get("WEIXIN_UID")
 weixin_appToken = env.get("WEIXIN_APP_TOKEN")
+
+# 虎课网
+huke_cookie = env.get("HUKE_COOKIE")

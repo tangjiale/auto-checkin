@@ -5,7 +5,7 @@
 # @Desc    : 
 # @File    : main.py
 # @Software: PyCharm
-from checkin import juejin, quanzi, sttcloud, woshipm, ynote
+from checkin import juejin, quanzi, sttcloud, woshipm, ynote, huke
 from common.push_message import push_message
 from common.title_type import TitleType
 
@@ -45,3 +45,8 @@ resp_dip_luck = jj.dip_luck()
 jj_msg = "签到：%s\n抽奖：%s \n沾福气：%s" % (resp_checkin, resp_draw, resp_dip_luck)
 # 推送消息
 push_message(TitleType.JueJin.value[0], jj_msg)
+
+# 6. 虎课网签到得虎课币
+hk = huke.HuKeCheckin()
+hk_resp_checkin = hk.checkin()
+push_message(TitleType.HuKe.value[0], hk_resp_checkin)
