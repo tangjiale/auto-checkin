@@ -48,7 +48,7 @@ class WoShiPmCheckin:
     # 登录
     # @param user_data 用户登录请求对象
     def login(self):
-        login_url = "https://passport.woshipm.com/api/loginByAPI.html?_cT=IOS&_cV=4.4.8&_cA=PM"
+        login_url = "https://passport.woshipm.com/api/loginByAPI.html?_cT=IOS&_cV=4.5.8&_cA=PM"
         login_header = {
             "Content-Type": "application/x-www-form-urlencoded",
             "User-Agent": "woshiPM/4.4.8 (iPhone; iOS 14.3; Scale/2.00)",
@@ -59,8 +59,8 @@ class WoShiPmCheckin:
         # 用户登录请求参数
         req_user_data = {
             "FROMSYS": "WD",
-            "account": "152084217173",
-            "pwd": "Pm_911026"
+            "account": constants.wspm_username,
+            "pwd": constants.wspm_password
         }
         response = requests.post(url=login_url, data=req_user_data, headers=login_header)
         print("%s登录响应：%s" % (TitleType.WSPM.value[0], response.text))
@@ -78,9 +78,3 @@ class WoShiPmCheckin:
             self.access_token, self.access_token_secret)
         response = requests.get(url=info_url, headers=self.header)
         print(response.text)
-
-# 请求数据
-note = WoShiPmCheckin()
-# note.login()
-# # note.get_user_info()
-print(note.checkin())
