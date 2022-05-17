@@ -7,6 +7,7 @@
 3. 管理圈APP（签到获得积分）
 4. 有道云笔记（签到获得存储空间）
 5. 掘金（签到获得砖石和抽奖）
+6. 虎课网（签到获得虎课币）
 
 ### 使用方式
 1. `fork` 本项目。
@@ -31,6 +32,8 @@
  - 管理圈
     WSPM_USER_NAME = 账号
     WSPM_PASSWORD = 密码
+ - 虎课网
+    HUKE_COOKIE = 个人Cookie
 4. 允许 Github Actions 工作流。
 ![enable](./statics/imgs/enable.png)
 ### 定时任务执行时间修改
