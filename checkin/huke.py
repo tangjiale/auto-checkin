@@ -38,6 +38,6 @@ class HuKeCheckin:
         else:
             return "签到失败,%s" % resp_data["err_msg"]
 
-hk = HuKeCheckin()
-hk_resp_checkin = hk.checkin()
-print(hk_resp_checkin)
+# hk = HuKeCheckin()
+# hk_resp_checkin = hk.checkin()
+# print(hk_resp_checkin)
