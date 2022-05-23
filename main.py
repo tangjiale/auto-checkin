@@ -13,10 +13,10 @@ from common.title_type import TitleType
 # push_msg = ""
 
 # 1. 有道云笔记 签到获取存储空间
-note = ynote.NoteCheckin()
-note_resp_checkin = note.checkin()
-# 推送消息
-push_message(TitleType.YNote.value[0], note_resp_checkin)
+# note = ynote.NoteCheckin()
+# note_resp_checkin = note.checkin()
+# # 推送消息
+# push_message(TitleType.YNote.value[0], note_resp_checkin)
 
 
 # 2. 人人都是产品经理 签到获得积分
@@ -47,6 +47,6 @@ jj_msg = "签到：%s\n抽奖：%s \n沾福气：%s" % (resp_checkin, resp_draw,
 push_message(TitleType.JueJin.value[0], jj_msg)
 
 # 6. 虎课网签到得虎课币
-hk = huke.HuKeCheckin()
-hk_resp_checkin = hk.checkin()
-push_message(TitleType.HuKe.value[0], hk_resp_checkin)
+# hk = huke.HuKeCheckin()
+# hk_resp_checkin = hk.checkin()
+# push_message(TitleType.HuKe.value[0], hk_resp_checkin)

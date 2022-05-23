@@ -46,7 +46,11 @@ class KrCheckin:
     # 登录
     # @param user_data 用户登录请求对象
     def login(self, user_data):
-       pass
+        login_url = "https://gateway.36kr.com/api/mus/login/byMobilePassword?sign=dd366b81ab2f31a336001a52aed28e64"
+        response = requests.post(url=login_url, json=user_data, headers=self.header)
+        resp_data = json.loads(response.text)
+        print("登录响应：%s" % resp_data)
+        pass
 
     # 获取用户信息
     def get_user_info(self):
@@ -72,36 +76,36 @@ class KrCheckin:
 
 # 用户登录请求参数
 req_user_data = {
-    "device_height":"1334.0",
-    "param":{
-        "platformId":"1",
-        "siteId":"1"
+    "timestamp_period": "300",
+    "device_density": "401",
+    "user_agent_ad": "Mozilla\/5.0 (iPhone; CPU iPhone OS 15_4 like Mac OS X) AppleWebKit\/605.1.15 (KHTML, like Gecko) Mobile\/15E148",
+    "isp": "中国移动",
+    "partner_id": "ios",
+    "mac": "88:25:93:c5:e:b9",
+    "network": "wifi",
+    "device_id": "CF2CED75-CA08-4CA7-A875-7B7FF2DA6A48",
+    "device_width": "1170.0",
+    "idfa": "00000000-0000-0000-0000-000000000000",
+    "os_version": "15.4",
+    "device_orientation": "0",
+    "param": {
+        "countryCode": "86",
+        "password": "RPd6kst2ebdB\/KOHCvuNY+6XQXNCTNxLpFW47ayhwdoJzKfpKugnmzkvEUN152R5xP3CUfmNOiGc8FF8KBfC6MJbnwyLyiXGCxLkzM0dyeRAzKb3bzC6H5DP+pfDyL0xXaRrgyp5VFp\/Sq7xDBYY1BkS+W+obThxJbGhfz6tpEA=",
+        "siteId": "1",
+        "platformId": "1",
+        "mobileNo": "NoBMJ4VoxmIQRyFWTvFe+LbZHlx\/UgxvjuOKh2GIy0x3wVjKunh3FijZ3KAx357S4dWnGixVrY0xrVrl9YyOz+waUhMznwBmd4gMZjnENDspizMrIdpK9Y1G0JPOEeE1MnNbpXZNFU0Cu33qEzZT7nwZs1K\/TQdeoh\/p5Wa1oO8="
     },
-    "device_model":"iPhone 8",
-    "timestamp":"1633763159",
-    "device_orientation":"0",
-    "timestamp_period":"300",
-    "ip":"192.168.99.225",
-    "device_brand":"Apple",
-    "app":"36kr",
-    "lat":30.577831072592343,
-    "network":"wifi",
-    "device_id":"CF2CED75-CA08-4CA7-A875-7B7FF2DA6A48",
-    "partner_id":"ios",
-    "krtoken":"Qk44XgKknDSiYIXpiUSbHF5v4FjJa2n_r4ZQLDr9AfcHDHiLWnNuuY7JSfL4wuO4PgqJPPWLV-D2wOMWBXXaAzWH69uhQ_FcGetL1SjYljU",
-    "mac":"88:25:93:c5:e:b9",
-    "user_agent_ad":"Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML,like Gecko) Mobile/15E148",
-    "device_density":"326",
-    "device_width":"750.0",
-    "os_version":"14.3",
-    "location_type":1,
-    "lon":104.06241853035004,
-    "partner_version":"9.3.6",
-    "isp":"中国移动",
-    "idfa":"00000000-0000-0000-0000-000000000000"
+    "partner_version": "9.5.1",
+    "ip": "118.122.120.118",
+    "device_model": "iPhone 13",
+    "device_height": "2532.0",
+    "device_brand": "Apple",
+    "app": "36kr",
+    "timestamp": "1652748526"
 }
 
 # 请求数据
 kr = KrCheckin()
 # kr.get_user_info()
-kr.checkin(kr.uid)
+# kr.checkin(kr.uid)
+kr.login(req_user_data)
