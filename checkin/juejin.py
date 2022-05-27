@@ -48,13 +48,25 @@ class JueJinCheckin:
         resp_data = json.loads(response.text)
         print("%s获取总矿石响应：%s" % (TitleType.JueJin.value[0], resp_data))
 
+    # 获取沾福气列表
+    def dip_luck_list(self):
+        data = {"page_no": 1, "page_size": 5}
+        list_url = "https://api.juejin.cn/growth_api/v1/lottery_history/global_big"
+        response = requests.post(url=list_url, json=data, cookies=self.cookies)
+        resp_data = json.loads(response.text)
+        if 0 == resp_data["err_no"]:
+            lottery = resp_data["data"]["lotteries"][0]
+            return self.dip_luck(lottery["history_id"])
+        else:
+            return "获取沾福气列表失败: %s" % resp_data["err_msg"]
+
     # 沾福气
-    def dip_luck(self):
-        # 获取用户唯一id
-        # user_param = unquote(self.cookies["__tea_cookie_tokens_2608"], encoding='utf-8', errors='replace')
-        # uuid = user_param["web_id"]
-        info_url = "https://api.juejin.cn/growth_api/v1/lottery_lucky/dip_lucky?aid=2608&uuid=7040367811554510371"
-        response = requests.post(url=info_url, cookies=self.cookies)
+    def dip_luck(self, history_id):
+        info_url = "https://api.juejin.cn/growth_api/v1/lottery_lucky/dip_lucky"
+        data = {
+            "lottery_history_id": history_id
+        }
+        response = requests.post(url=info_url, json=data, cookies=self.cookies)
         # 响应：{"err_no":0,"err_msg":"success","data":{"dip_action":1,"has_dip":false,"total_value":1679,"dip_value":10}}
         resp_data = json.loads(response.text)
         print("%s沾福气信息响应：%s" % (TitleType.JueJin.value[0], resp_data))
