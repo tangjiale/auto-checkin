@@ -56,6 +56,7 @@ class JueJinCheckin:
         resp_data = json.loads(response.text)
         if 0 == resp_data["err_no"]:
             lottery = resp_data["data"]["lotteries"][0]
+            # 进行沾福气
             return self.dip_luck(lottery["history_id"])
         else:
             return "获取沾福气列表失败: %s" % resp_data["err_msg"]
