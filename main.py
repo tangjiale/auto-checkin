@@ -20,10 +20,10 @@ from common.title_type import TitleType
 
 
 # 2. 人人都是产品经理 签到获得积分
-wspm = woshipm.WoShiPmCheckin()
-wspm_resp_checkin = wspm.checkin()
+# wspm = woshipm.WoShiPmCheckin()
+# wspm_resp_checkin = wspm.checkin()
 # 推送消息
-push_message(TitleType.WSPM.value[0], wspm_resp_checkin)
+# push_message(TitleType.WSPM.value[0], wspm_resp_checkin)
 
 # 3. sttCloud 签到获得流量
 stt = sttcloud.SttCheckin()
