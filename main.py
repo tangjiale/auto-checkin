@@ -32,10 +32,10 @@ stt_resp_checkin = stt.checkin()
 push_message(TitleType.STT.value[0], stt_resp_checkin)
 
 # 4. 管理圈 签到获得积分
-qz = quanzi.QuanziCheckin()
-qz_resp_checkin = qz.checkin()
-# 推送消息
-push_message(TitleType.PMQZ.value[0], qz_resp_checkin)
+# qz = quanzi.QuanziCheckin()
+# qz_resp_checkin = qz.checkin()
+# # 推送消息
+# push_message(TitleType.PMQZ.value[0], qz_resp_checkin)
 
 # 5. 掘金 签到获得钻石并抽奖，并沾福气
 jj = juejin.JueJinCheckin()
