@@ -14,9 +14,9 @@ import os
 # 环境变量
 env = os.environ
 
-stt_main = env.get("STT_DOMAIN")
-stt_username = env.get("STT_USER_NAME")
-stt_password = env.get("STT_PASSWORD")
+stt_main = 'https://www.stthome.top'
+stt_username = 'jialesmile@foxmail.com'
+stt_password = 'stt_911026'
 
 
 class SttCheckin:
