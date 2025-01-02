@@ -17,16 +17,18 @@ jobs:
         run:  |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-      - name: Run-Juejin
+      - name: Run-sttcloud
         env:
+          BARK_KEY: ${{ secrets.BARK_KEY }}
+          WEIXIN_UID: ${{ secrets.WEIXIN_UID }}
+          WEIXIN_APP_TOKEN: ${{ secrets.WEIXIN_APP_TOKEN }}
+          PUSH_TYPE: ${{ secrets.PUSH_TYPE }}
           STT_DOMAIN: ${{ secrets.STT_DOMAIN }}
           STT_USER_NAME: ${{ secrets.STT_USER_NAME }}
           STT_PASSWORD: ${{ secrets.STT_PASSWORD }}
-          PMQZ_USER_NAME: ${{ secrets.PMQZ_USER_NAME }}
-          PMQZ_PASSWORD: ${{ secrets.PMQZ_PASSWORD }}
-          WSPM_USER_NAME: ${{ secrets.WSPM_USER_NAME }}
-          WSPM_PASSWORD: ${{ secrets.WSPM_PASSWORD }}
-          YNOTE_COOKIE: ${{ secrets.YNOTE_COOKIE }}
+        run: python checkin/juejin.py
+      - name: Run-Juejin
+        env:
           BARK_KEY: ${{ secrets.BARK_KEY }}
           WEIXIN_UID: ${{ secrets.WEIXIN_UID }}
           WEIXIN_APP_TOKEN: ${{ secrets.WEIXIN_APP_TOKEN }}
@@ -34,5 +36,4 @@ jobs:
           JUEJIN_COOKIE: ${{ secrets.JUEJIN_COOKIE }}
           JUEJIN_A_BOGUS: ${{ secrets.JUEJIN_A_BOGUS }}
           JUEJIN_MS_TOKEN: ${{ secrets.JUEJIN_MS_TOKEN }}
-          HUKE_COOKIE: ${{ secrets.HUKE_COOKIE }}
-        run: python main.py
+        run: python checkin/sttcloud.py

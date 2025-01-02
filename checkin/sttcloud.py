@@ -9,6 +9,7 @@ import requests
 from requests import utils
 
 from common import constants
+from common.push_message import push_message
 from common.title_type import TitleType
 
 
@@ -57,3 +58,10 @@ class SttCheckin:
 # stt.login()
 # stt.checkin()
 ##  stt.user()
+
+
+if __name__ == '__main__':
+    stt = SttCheckin()
+    stt_resp_checkin = stt.checkin()
+    # 推送消息
+    push_message(TitleType.STT.value[0], stt_resp_checkin)

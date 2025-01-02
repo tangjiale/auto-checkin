@@ -9,6 +9,8 @@ import json
 import requests
 import os
 
+from common.push_message import push_message
+
 # 环境变量
 env = os.environ
 
@@ -132,4 +134,8 @@ class JueJinCheckin:
 
 if __name__ == '__main__':
     jj = JueJinCheckin()
-    jj.get_user_info()
+    resp_checkin = jj.checkin()
+    resp_draw = jj.draw()
+    jj_msg = "签到：%s\n抽奖：%s " % (resp_checkin, resp_draw)
+    # 推送消息
+    push_message(jj.title_type, jj_msg)
