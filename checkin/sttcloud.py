@@ -8,9 +8,15 @@
 import requests
 from requests import utils
 
-from common import constants
 from common.push_message import push_message
-from common.title_type import TitleType
+import os
+
+# 环境变量
+env = os.environ
+
+stt_main = env.get("STT_DOMAIN")
+stt_username = env.get("STT_USER_NAME")
+stt_password = env.get("STT_PASSWORD")
 
 
 class SttCheckin:
@@ -21,17 +27,18 @@ class SttCheckin:
             "Accept": "application/json, text/javascript, */*; q=0.01"
         }
         self.cookies = {}
+        self.title_type = 'SttCloud'
 
     # 登录
     # @param data 登录请求信息
     def login(self):
-        login_url = "%s/auth/login" % constants.stt_main
+        login_url = "%s/auth/login" % stt_main
         data = {
-            'email': constants.stt_username,
-            'passwd': constants.stt_password,
+            'email': stt_username,
+            'passwd': stt_password,
         }
         response = requests.post(url=login_url, data=data, headers=self.header)
-        print("%s登录响应：%s" % (TitleType.STT.value[0], response.text.encode().decode("unicode_escape")))
+        print("%s登录响应：%s" % (self.title_type, response.text.encode().decode("unicode_escape")))
         # 获取requests请求返回的cookie
         self.cookies = requests.utils.dict_from_cookiejar(response.cookies)
         # print(self.cookies)
@@ -42,17 +49,18 @@ class SttCheckin:
         login_result = self.login()
         if login_result:
             return login_result
-        checkin_url = "%s/user/checkin" % constants.stt_main
+        checkin_url = "%s/user/checkin" % stt_main
         response = requests.post(url=checkin_url, headers=self.header, cookies=self.cookies)
         resp_data = eval(response.text.encode().decode("unicode_escape"))
-        print("%s签到响应：%s" % (TitleType.STT.value[0], resp_data))
+        print("%s签到响应：%s" % (self.title_type, resp_data))
         return resp_data["msg"]
 
     # 获取用户信息
     def user(self):
-        user_info_url = "%s/user" % constants.stt_main
+        user_info_url = "%s/user" % stt_main
         response = requests.get(url=user_info_url, headers=self.header, cookies=self.cookies)
         print(response.text)
+
 
 # stt = SttCheckin()
 # stt.login()
@@ -64,4 +72,4 @@ if __name__ == '__main__':
     stt = SttCheckin()
     stt_resp_checkin = stt.checkin()
     # 推送消息
-    push_message(TitleType.STT.value[0], stt_resp_checkin)
+    push_message(stt.title_type, stt_resp_checkin)
