@@ -6,27 +6,21 @@
 # @File    : juejin.py
 # @Software: PyCharm
 import json
+
 import requests
-import os
 
-# 环境变量
-env = os.environ
+from common import constants
+from common.title_type import TitleType
 
 
-class JueJinCheckin:
+class LenovoCheckin:
 
     def __init__(self):
-
-        self.title_type = '掘金'
         self.header = {
             "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.107 Safari/537.36",
-            "Content-Type": "text/json; charset=utf-8"
+            "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"
         }
-        self.a_bogus = env.get("JUEJIN_A_BOGUS")
-        self.ms_token = env.get("JUEJIN_MS_TOKEN")
-        self.aid = "2608"
-        self.uuid = '7217736282906101285'
-        cookies_str = env.get("JUEJIN_COOKIE")
+        cookies_str = constants.lenovo_cookie
         cookies_dict = {}
         for cookie in cookies_str.split('; '):
             cookies_dict[cookie.split('=')[0]] = cookie.split('=')[-1]
@@ -34,11 +28,10 @@ class JueJinCheckin:
 
     # 签到
     def checkin(self):
-        checkin_url = "https://api.juejin.cn/growth_api/v1/check_in?aid=2608&uuid=7217736282906101285&spider=0&msToken=%s&a_bogus=%s" % (
-            self.ms_token, self.a_bogus)
+        checkin_url = "https://club.lenovo.com.cn/sign"
         response = requests.post(url=checkin_url, cookies=self.cookies)
         resp_data = json.loads(response.text)
-        print("%s签到响应：%s" % (self.title_type, resp_data))
+        print("%s签到响应：%s" % (TitleType.JueJin.value[0], resp_data))
         if 0 == resp_data["err_no"]:
             if resp_data["err_msg"] == 'success':
                 return "签到成功，增加矿石: %dM" % (resp_data["data"]["incr_point"])
@@ -49,12 +42,11 @@ class JueJinCheckin:
 
     # 获取总矿石
     def get_cur_point(self):
-        info_url = "https://api.juejin.cn/growth_api/v1/get_cur_point?aid=%s&uuid=%s&spider=0&msToken=%s&a_bogus=%s" % (
-            self.aid, self.uuid, self.ms_token, self.a_bogus)
+        info_url = "https://api.juejin.cn/growth_api/v1/get_cur_point"
         response = requests.get(url=info_url, cookies=self.cookies)
         # 响应：{"err_no":0,"err_msg":"success","data":766}
         resp_data = json.loads(response.text)
-        print("%s获取总矿石响应：%s" % (self.title_type, resp_data))
+        print("%s获取总矿石响应：%s" % (TitleType.JueJin.value[0], resp_data))
 
     # 获取沾福气列表
     def dip_luck_list(self):
@@ -78,7 +70,7 @@ class JueJinCheckin:
         response = requests.post(url=info_url, json=data, cookies=self.cookies)
         # 响应：{"err_no":0,"err_msg":"success","data":{"dip_action":1,"has_dip":false,"total_value":1679,"dip_value":10}}
         resp_data = json.loads(response.text)
-        print("%s沾福气信息响应：%s" % (self.title_type, resp_data))
+        print("%s沾福气信息响应：%s" % (TitleType.JueJin.value[0], resp_data))
         if 0 == resp_data["err_no"]:
             if resp_data["err_msg"] == 'success':
                 return "沾福气成功，获得幸运点数: %d" % (resp_data["data"]["dip_value"])
@@ -89,12 +81,11 @@ class JueJinCheckin:
 
     # 获取抽奖信息
     def get_draw_info(self):
-        info_url = "https://api.juejin.cn/growth_api/v1/lottery_config/get?aid=%s&uuid=%s&spider=0&msToken=%s&a_bogus=%s" % (
-            self.aid, self.uuid, self.ms_token, self.a_bogus)
+        info_url = "https://api.juejin.cn/growth_api/v1/lottery_config/get"
         response = requests.get(url=info_url, cookies=self.cookies)
         # 响应：{"err_no":0,"err_msg":"success","data":true}
         resp_data = json.loads(response.text)
-        print("%s查询抽奖信息响应：%s" % (self.title_type, resp_data))
+        print("%s查询抽奖信息响应：%s" % (TitleType.JueJin.value[0], resp_data))
         return resp_data
 
     # 抽奖
@@ -102,8 +93,7 @@ class JueJinCheckin:
         draw_info = self.get_draw_info()
         if draw_info["err_no"] == 0:
             if draw_info["data"]["free_count"] > 0:
-                draw_url = "https://api.juejin.cn/growth_api/v1/lottery/draw?aid=%s&uuid=%s&spider=0&msToken=%s&a_bogus=%s" % (
-                    self.aid, self.uuid, self.ms_token, self.a_bogus)
+                draw_url = "https://api.juejin.cn/growth_api/v1/lottery/draw"
                 response = requests.post(url=draw_url, cookies=self.cookies)
                 # 响应 ： {'err_no': 0, 'err_msg': 'success', 'data': {'id': 19, 'lottery_id': '6981716980386496552',
                 # 'lottery_name': '11矿石', 'lottery_type': 1, 'lottery_image':
@@ -111,7 +101,7 @@ class JueJinCheckin:
                 # -no-mark:0:0:0:0.image', 'lottery_desc': '', 'history_id': '7087024855945576482',
                 # 'total_lucky_value': 1699, 'draw_lucky_value': 10}}
                 resp_data = json.loads(response.text)
-                print("%s抽奖响应：%s" % (self.title_type, resp_data))
+                print("%s抽奖响应：%s" % (TitleType.JueJin.value[0], resp_data))
                 if resp_data["err_no"] == 0:
                     if "Bug" != resp_data["data"]["lottery_name"]:
                         return "中奖了: %s" % resp_data["data"]["lottery_name"]
@@ -124,12 +114,6 @@ class JueJinCheckin:
 
     # 获取用户信息
     def get_user_info(self):
-        info_url = "https://api.juejin.cn/user_api/v1/user/get?aid=%s&uuid=%s&spider=0&msToken=%s&a_bogus=%s" % (
-            self.aid, self.uuid, self.ms_token, self.a_bogus)
+        info_url = "https://api.juejin.cn/user_api/v1/user/get"
         response = requests.get(url=info_url, cookies=self.cookies)
         print(response.text)
-
-
-if __name__ == '__main__':
-    jj = JueJinCheckin()
-    jj.get_user_info()

@@ -37,12 +37,11 @@ push_message(TitleType.STT.value[0], stt_resp_checkin)
 # # 推送消息
 # push_message(TitleType.PMQZ.value[0], qz_resp_checkin)
 
-# 5. 掘金 签到获得钻石并抽奖，并沾福气
+# 5. 掘金 签到获得钻石并抽奖
 jj = juejin.JueJinCheckin()
 resp_checkin = jj.checkin()
 resp_draw = jj.draw()
-resp_dip_luck = jj.dip_luck_list()
-jj_msg = "签到：%s\n抽奖：%s \n沾福气：%s" % (resp_checkin, resp_draw, resp_dip_luck)
+jj_msg = "签到：%s\n抽奖：%s " % (resp_checkin, resp_draw)
 # 推送消息
 push_message(TitleType.JueJin.value[0], jj_msg)
 

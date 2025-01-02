@@ -41,3 +41,6 @@ weixin_appToken = env.get("WEIXIN_APP_TOKEN")
 
 # 虎课网
 huke_cookie = env.get("HUKE_COOKIE")
+
+# 联想商城
+lenovo_cookie = env.get("LENOVO_COOKIE")

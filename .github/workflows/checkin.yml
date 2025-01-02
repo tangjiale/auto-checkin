@@ -17,7 +17,7 @@ jobs:
         run:  |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-      - name: Run
+      - name: Run-Juejin
         env:
           STT_DOMAIN: ${{ secrets.STT_DOMAIN }}
           STT_USER_NAME: ${{ secrets.STT_USER_NAME }}
@@ -32,5 +32,7 @@ jobs:
           WEIXIN_APP_TOKEN: ${{ secrets.WEIXIN_APP_TOKEN }}
           PUSH_TYPE: ${{ secrets.PUSH_TYPE }}
           JUEJIN_COOKIE: ${{ secrets.JUEJIN_COOKIE }}
+          JUEJIN_A_BOGUS: ${{ secrets.JUEJIN_A_BOGUS }}
+          JUEJIN_MS_TOKEN: ${{ secrets.JUEJIN_MS_TOKEN }}
           HUKE_COOKIE: ${{ secrets.HUKE_COOKIE }}
         run: python main.py
