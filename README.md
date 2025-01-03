@@ -27,6 +27,8 @@
     STT_PASSWORD = 密码
  - 掘金
     JUEJIN_COOKIE = 个人cookie
+    JUEJIN_A_BOGUS = 个人的bogus
+    JUEJIN_MS_TOKEN = 个人的msToken
  - 有道云笔记
     YNOTE_COOKIE = 个人Cookie
  - 管理圈

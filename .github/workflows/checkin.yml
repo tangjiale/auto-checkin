@@ -26,7 +26,7 @@ jobs:
           STT_DOMAIN: ${{ secrets.STT_DOMAIN }}
           STT_USER_NAME: ${{ secrets.STT_USER_NAME }}
           STT_PASSWORD: ${{ secrets.STT_PASSWORD }}
-        run: python -m checkin.juejin
+        run: python -m checkin.sttcloud
       - name: Run-Juejin
         env:
           BARK_KEY: ${{ secrets.BARK_KEY }}
@@ -36,4 +36,4 @@ jobs:
           JUEJIN_COOKIE: ${{ secrets.JUEJIN_COOKIE }}
           JUEJIN_A_BOGUS: ${{ secrets.JUEJIN_A_BOGUS }}
           JUEJIN_MS_TOKEN: ${{ secrets.JUEJIN_MS_TOKEN }}
-        run: python -m checkin.sttcloud
+        run: python -m checkin.juejin
